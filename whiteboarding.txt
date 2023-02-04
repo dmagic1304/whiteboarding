@@ -1,0 +1,226 @@
+// Question #1: Turning Strings to URLs
+URLs cannot have spaces. Instead, all spaces in a string are replaced with %20. Write an algorithm that replaces all spaces in a string with %20.
+
+You may not use the replace() method or regular expressions to solve this problem. Solve the problem with and without recursion.
+
+Example
+Input: "Jasmine Ann Jones"
+Output: "Jasmine%20Ann%20Jones"
+
+//RECURSIVE
+-set base case to return when passed in string is empty
+-using substring method, find a way to call recursion and pass in shortened string 
+-check the current string index for empty space, if true, replace it with %20
+
+const url = (string) =>{
+	if (string === ""){
+  return "";
+  } else {  
+  if (string[string.length-1] !== " "){
+  	return url(string.substring(0, string.length - 1)) + string[string.length-1]
+    } else {
+    return url(string.substring(0, string.length -1)) + "%20"
+    }
+  }
+}
+
+//NO RECURSION
+-declare result variable as empty string
+-do for loop through the string
+-using addition push each letter to the result string
+-use if statement to replace spaces with %20
+
+const url = (string) =>{
+let result = ""
+for (let i = 0; i < string.length - 1; i++){
+    string[i] != " " ? result = result + string[i] : result = result + "%20"	
+}
+  return result
+}
+
+
+Question #2: Array Deduping
+Write an algorithm that removes duplicates from an array. Do not use a function like filter() to solve this. Once you have solved the problem, 
+demonstrate how it can be solved with filter(). Solve the problem with and without recursion.
+
+Example
+Input: [7, 9, "hi", 12, "hi", 7, 53]
+Output: [7, 9, "hi", 12, 53]
+
+//RECURSION
+-declare empty arr to store unique
+-set a base using last index
+-increasing the index, loop through the array checking if the unique array already has the matching element, if not, add it
+-return unique array
+
+const unique = (arr, uniqueArr) => {
+	if (arr.length === 0)
+  	{return uniqueArr}
+  else {
+  if (uniqueArr.includes(arr[0]))
+  {return unique(arr.slice(1), uniqueArr)}
+  else {
+    const newUnique = [...uniqueArr, arr[0]]
+    console.log(newUnique);
+  return unique(arr.slice(1), [...uniqueArr, arr[0]])
+  }
+  }
+}
+
+
+//NO RECURSION	
+-apply filter on the input array
+-use filter with 2 paramaters including the index
+-filter only where index matches the indexOf
+
+const unique = (arr) =>{
+	return arr.filter((element, index) => indexOf(element) === index);
+  }
+
+
+
+Question #3: Compressing Strings
+Write an algorithm that takes a string with repeated characters and compresses them, using a number to show how many times the repeated character 
+has been compressed. For instance, aaa would be written as 3a. Solve the problem with and without recursion.
+
+Example
+Input: "aaabccdddda"
+Output: "3ab2c4da"
+
+//RECURSION
+
+-set a base to empty string
+-use a while loop to compare current index 0 to next, increasing the counter if they are the same
+-when it no longer matches, return count+current index and call the  function again passing it substring(count) to remove the compressed letter and start again
+
+const compress = (string) => {
+if (string = "")
+ {return ""
+} else {
+let counter = 1;
+for (let i = 0; i < string.length; i++){
+	if (string[0] === string[counter]) {
+  counter ++
+  } else {
+  break;
+  }
+}
+return compress(string.substring(counter)) + counter + string[0]
+}  
+}
+
+//NO RECURSION
+-declare empty string variable for result
+-declare currentLetter as index 0
+-declare counter variable and set to 1
+-loop through string, if string at index matches current, increase counter
+-in not, concat counter+currentLetter to result
+
+
+
+function compressString(inputString) {
+let result = "";
+let currentChar = inputString[0];
+let currentCount = 1;
+    
+  for (let i = 1; i < inputString.length; i++) {
+  if (inputString[i] === currentChar) {
+    currentCount++;
+  } else {
+  result += currentCount + currentChar;
+  currentChar = inputString[i];
+  currentCount = 1;
+  }
+}
+  result += currentCount + currentChar;
+    
+    return result
+}
+
+
+
+
+Question #4: Checking for Uniqueness
+Write an algorithm that determines whether all the elements in a string are unique. You may not convert the string into an array or use array methods to 
+solve this problem. The algorithm should return a boolean.
+
+Example
+Input: "hello"
+Output: false
+
+Input: "copyright"
+Output: true
+
+
+//RECURSIVE
+-pass an indext as an argument with the string
+-set a base so that if the index reaches string length, it returns true
+-loop through the string comparing index and index + 1
+-if true, return false, if false, call function again with index + 1
+
+const unique = (string, index = 0) => {
+if (index >= string.length) {
+  return true;
+  }
+
+  for (let i = index + 1; i < string.length; i++) {
+  if (string[index] === string[i]) {
+    return false;
+    }
+  }
+
+  return unique(string, index + 1);
+};
+
+
+// NON RECURSIVE
+-declare empty result var as string
+-loop through input string, if result.includes is false for current index, add to result
+-if result.includes is true, return false
+
+const unique = (string) => {
+let result = ""
+for (let i = 0; i < string.length; i++) {
+  if(result.includes(string[i])){ 
+    return false
+  } else { 
+    result = result + string[i]
+  }
+}
+  return true;
+}
+
+
+
+Question #5: Array Sorting
+Write an algorithm that sorts an array without using the sort() method. There are many different sorting algorithms — take the time to read about the following:
+
+Quick sort
+Merge sort
+Heap sort
+Insertion sort
+Bubble sort
+Selection sort
+You may implement any of the above algorithms (or your own) to solve the problem — as long as it doesn't use sort().
+
+Example
+Input: [9, 2, 7, 12]
+Output: [2, 7, 9, 12]
+
+-use bubble sort method to arrange from small to big
+-outer loop go through the array while inner loop changes places of neighboring numbers
+-after each j iteration, biggest number is moved to the end and can be ignored after
+
+
+function bubbleSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      if (arr[j] > arr[j + 1]) {
+       let temp = arr[j];
+       arr[j] = arr[j + 1];
+       arr[j + 1] = temp;
+       }
+       }
+  }
+  return arr;
+}
